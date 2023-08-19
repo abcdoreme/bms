@@ -1,0 +1,32 @@
+ngx_addon_name=bms
+
+ BMS_SRCS="$ngx_addon_dir/ngx_bms.c $ngx_addon_dir/ngx_bms_core_module.c"
+
+ BMS_DEPS="$ngx_addon_dir/ngx_bms.h"
+
+if [ -f auto/module ] ; then
+    ngx_module_incs=$ngx_addon_dir
+    ngx_module_deps=$BMS_DEPS
+
+    if [ $ngx_module_link = DYNAMIC ] ; then
+        ngx_module_name="ngx_bms_module ngx_bms_core_module"
+        ngx_module_srcs="$BMS_SRCS"
+
+        . auto/module
+
+    else
+        ngx_module_type=CORE
+        ngx_module_name="ngx_bms_module ngx_bms_core_module"
+        ngx_module_srcs=$BMS_SRCS
+
+        . auto/module
+    fi
+
+else
+
+
+    NGX_ADDON_DEPS="$NGX_ADDON_DEPS $BMS_DEPS"
+    NGX_ADDON_SRCS="$NGX_ADDON_SRCS $BMS_SRCS"
+
+    CFLAGS="$CFLAGS -I$ngx_addon_dir"
+fi
